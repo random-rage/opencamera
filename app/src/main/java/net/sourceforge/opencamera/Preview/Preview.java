@@ -2412,7 +2412,16 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		String rotate_preview = applicationInterface.getPreviewRotationPref();
 		if( MyDebug.LOG )
 			Log.d(TAG, "    rotate_preview = " + rotate_preview);
-		if( rotate_preview.equals("180") ) {
+		if( rotate_preview.equals("90") ) {
+			switch (rotation) {
+				case Surface.ROTATION_0: rotation = Surface.ROTATION_90; break;
+				case Surface.ROTATION_90: rotation = Surface.ROTATION_180; break;
+				case Surface.ROTATION_180: rotation = Surface.ROTATION_270; break;
+				case Surface.ROTATION_270: rotation = Surface.ROTATION_0; break;
+				default:
+					break;
+			}
+		} else if( rotate_preview.equals("180") ) {
 		    switch (rotation) {
 		    	case Surface.ROTATION_0: rotation = Surface.ROTATION_180; break;
 		    	case Surface.ROTATION_90: rotation = Surface.ROTATION_270; break;
@@ -2421,6 +2430,15 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 	    		default:
 	    			break;
 		    }
+		} else if( rotate_preview.equals("270") ) {
+			switch (rotation) {
+				case Surface.ROTATION_0: rotation = Surface.ROTATION_270; break;
+				case Surface.ROTATION_90: rotation = Surface.ROTATION_0; break;
+				case Surface.ROTATION_180: rotation = Surface.ROTATION_90; break;
+				case Surface.ROTATION_270: rotation = Surface.ROTATION_180; break;
+				default:
+					break;
+			}
 		}
 
 		return rotation;
@@ -2503,18 +2521,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 	}
 
 	private int getDeviceDefaultOrientation() {
-	    WindowManager windowManager = (WindowManager)this.getContext().getSystemService(Context.WINDOW_SERVICE);
-	    Configuration config = getResources().getConfiguration();
-	    int rotation = windowManager.getDefaultDisplay().getRotation();
-	    if( ( (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) &&
-	    		config.orientation == Configuration.ORIENTATION_LANDSCAPE )
-	    		|| ( (rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) &&    
-	            config.orientation == Configuration.ORIENTATION_PORTRAIT ) ) {
-	    	return Configuration.ORIENTATION_LANDSCAPE;
-	    }
-	    else { 
-	    	return Configuration.ORIENTATION_PORTRAIT;
-	    }
+        return (current_rotation % 180 == 0) ? Configuration.ORIENTATION_PORTRAIT : Configuration.ORIENTATION_LANDSCAPE;
 	}
 
 	/* Returns the rotation (in degrees) to use for images/videos, taking the preference_lock_orientation into account.
@@ -2565,6 +2572,20 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 				Log.d(TAG, "getImageVideoRotation() lock to portrait, returns " + result);
 		    return result;
 		}
+        else if( lock_orientation.equals("invert") ) {
+            int camera_orientation = camera_controller.getCameraOrientation();
+            int result;
+                if( camera_controller.isFrontFacing() ) {
+                    result = (camera_orientation + current_rotation + 270) % 360;
+                }
+                else {
+                    result = (camera_orientation + current_rotation + 90) % 360;
+                }
+
+            if( MyDebug.LOG )
+                Log.d(TAG, "getImageVideoRotation() lock to invert, returns " + result);
+            return result;
+        }
 		if( MyDebug.LOG )
 			Log.d(TAG, "getImageVideoRotation() returns current_rotation " + current_rotation);
 		return this.current_rotation;

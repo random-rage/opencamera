@@ -64,11 +64,13 @@
         <item>No lock</item>
         <item>Lock to landscape</item>
         <item>Lock to portrait</item>
+        <item>Inverse</item>
     </string-array>
     <string-array name="preference_lock_orientation_values">
         <item>none</item>
         <item>landscape</item>
         <item>portrait</item>
+        <item>invert</item>
     </string-array>
     <string-array name="preference_timer_entries">
         <item>Off</item>
@@ -192,11 +194,15 @@
     </string-array>
     <string-array name="preference_rotate_preview_entries">
         <item>Don\'t rotate</item>
+        <item>Rotate 90 degrees</item>
         <item>Rotate 180 degrees</item>
-        </string-array>
+        <item>Rotate 270 degrees</item>
+    </string-array>
     <string-array name="preference_rotate_preview_values">
         <item>0</item>
+        <item>90</item>
         <item>180</item>
+        <item>270</item>
     </string-array>
     <string-array name="preference_ui_placement_entries">
         <item>Left-handed user interface</item>

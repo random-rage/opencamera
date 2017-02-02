@@ -64,11 +64,13 @@
         <item>Нет</item>
         <item>Альбомная</item>
         <item>Портретная</item>
+        <item>Инверсная</item>
     </string-array>
     <string-array name="preference_lock_orientation_values">
         <item>none</item>
         <item>landscape</item>
         <item>portrait</item>
+        <item>invert</item>
     </string-array>
     <string-array name="preference_timer_entries">
         <item>Выкл</item>
@@ -192,11 +194,15 @@
     </string-array>
     <string-array name="preference_rotate_preview_entries">
         <item>Не поворачивать</item>
+        <item>Повернуть на 90 градусов</item>
         <item>Повернуть на 180 градусов</item>
+        <item>Повернуть на 270 градусов</item>
         </string-array>
     <string-array name="preference_rotate_preview_values">
         <item>0</item>
+        <item>90</item>
         <item>180</item>
+        <item>270</item>
     </string-array>
     <string-array name="preference_ui_placement_entries">
         <item>Интерфейс для левши</item>
